@@ -1,0 +1,19 @@
+{
+    "scripts": {
+      "start": "python app.py"
+    },
+    "models": {
+      "alwaysai/res10_300x300_ssd_iter_140000": 6
+    },
+    "config":{
+        "model_name": "alwaysai/res10_300x300_ssd_iter_140000",
+        "video_camera_id": 0,
+        "enable_streamer": true,
+        "enable_logs": true,
+        "object_detection_period": 30,
+        "object_detect_confidence": 70,
+        "centroid_deregister_frames": 30,
+        "centroid_max_distance": 50
+    }
+  }
+  
