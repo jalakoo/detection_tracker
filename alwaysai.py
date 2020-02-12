@@ -3,7 +3,7 @@ import time
 import edgeiq
 import os
 import delivery
-
+import logger
 
 def is_accelerator_available():
     """Detect if an Intel Neural Compute Stick accelerator is attached"""
@@ -69,10 +69,15 @@ def start_detection_and_tracking_from_config(config):
                        data_frames=data_frames, image_frames=image_frames, should_log=should_log)
 
     video = config.get('video_filename', None)
+    if should_log == True:
+        logger.enable_logging()
+
     if (video is None or video == ''):
+        logger.info('Starting webcam stream')
         start_camera_detection_and_tracking(delivery, filter_for, model_name=config['model_name'], camera_id=config[
             "video_camera_id"], detection_confidence=confidence, enable_streamer=enable_streamer, should_log=should_log)
     else:
+        logger.info('Starting video file stream')
         start_file_detection_and_tracking(
             delivery, filter_for, model_name=config['model_name'], filename=video, detection_confidence=confidence, enable_streamer=enable_streamer, should_log=should_log)
     # start_camera_detection_and_tracking(url, model_name=config['model_name'], camera_id=config["video_camera_id"], detection_confidence=confidence, enable_streamer=enable_streamer)
@@ -130,17 +135,17 @@ def start_camera_detection_and_tracking(delivery_object, filter_for, model_name,
                     )
                     predictions.append(prediction)
 
-                    # if delivery.should_send_image(object_id):
-                    #     # Extract image
-                    #     face_image = edgeiq.cutout_image(frame, prediction.box)
-                    #     # Send data to server
-                    #     delivery.send_image(
-                    #         object_id, prediction.label, face_image)
-                    # elif delivery.should_send_data(object_id):
-                    #     delivery.send_data(object_id, prediction.label)
-                    
-                    if delivery.should_send_data(object_id):
+                    if delivery.should_send_image(object_id) == True:
+                        # Extract image
+                        face_image = edgeiq.cutout_image(frame, prediction.box)
+                        # Send data to server
+                        delivery.send_image(
+                            object_id, prediction.label, face_image)
+                    elif delivery.should_send_data(object_id) == True:
                         delivery.send_data(object_id, prediction.label)
+                    
+                    # if delivery.should_send_data(object_id):
+                    #     delivery.send_data(object_id, prediction.label)
 
                 frame = edgeiq.markup_image(frame, predictions)
                 streamer.send_data(frame, text)
@@ -209,17 +214,17 @@ def start_file_detection_and_tracking(delivery_object, filter_for, model_name, f
                     )
                     predictions.append(prediction)
 
-                    # if delivery.should_send_image(object_id):
-                    #     # Extract image
-                    #     face_image = edgeiq.cutout_image(frame, prediction.box)
-                    #     # Send data to server
-                    #     delivery.send_image(
-                    #         object_id, prediction.label, face_image)
-                    # elif delivery.should_send_data(object_id):
-                    #     delivery.send_data(object_id, prediction.label)
-
-                    if delivery.should_send_data(object_id):
+                    if delivery.should_send_image(object_id):
+                        # Extract image
+                        face_image = edgeiq.cutout_image(frame, prediction.box)
+                        # Send data to server
+                        delivery.send_image(
+                            object_id, prediction.label, face_image)
+                    elif delivery.should_send_data(object_id):
                         delivery.send_data(object_id, prediction.label)
+
+                    # if delivery.should_send_data(object_id):
+                    #     delivery.send_data(object_id, prediction.label)
 
                 frame = edgeiq.markup_image(frame, predictions)
                 streamer.send_data(frame, text)

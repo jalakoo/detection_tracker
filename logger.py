@@ -14,6 +14,16 @@ handler.setFormatter(formatter)
 # add the handlers to the logger
 logger.addHandler(handler)
 
-def info(message, should_log=False):
+SHOULD_LOG = False
+
+def enable_logging():
+    global SHOULD_LOG
+    SHOULD_LOG = True
+
+def info(message):
+    global SHOULD_LOG
+    log(message, SHOULD_LOG)
+
+def log(message, should_log=False):
     if should_log == True:
         logger.info(message)

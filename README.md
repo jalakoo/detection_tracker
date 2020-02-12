@@ -32,8 +32,8 @@ Only the `model_name` and `endpoint_url` is required, all other keys are optiona
 
 KEY |  VALUE TYPE | DESCRIPTION | DEFAULT | REQUIRED | IMPLEMENTED
 ---- | ---- | ---- | ----- | ---- | ---- |
-model_name | string | Name of desired model from [alwaysAI's model catalog]() | No Default | Yes | Yes
-endpoint_url | string | Server url to send data and images to | No Default | Yes | Yes
+model_name | string | Name of desired model from [alwaysAI's model catalog]() | None | Yes | Yes
+endpoint_url | string | Server url to send data and images to | None | Yes | Yes
 video_camera_id | number | Id index of an attached camera. 0 is the usual index | 0 | No | Yes
 video_filename | string | Path to a video file to use instead of using an attached camera. This will supercede the camera settings and attempt to load the give video file. | None | No | Yes
 enable_streamer | boolean | Whether or not to turn on the debug streamer | true | No | No

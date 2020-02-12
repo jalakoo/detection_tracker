@@ -19,11 +19,11 @@
     "data_url": "http://192.168.1.14:8888/object_detected",
     "images_url": "http://localhost:8888/image_detected",
     "send_image_frames": [
-      -1,
+      1,
       3
     ],
     "send_data_frames": [
-      1,
+      -1,
       10
     ]
   }
