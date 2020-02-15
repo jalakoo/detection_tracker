@@ -7,7 +7,8 @@ This is a json configuration that can be included in the `alwaysai.target.json` 
 ```
   "config": {
     "model_name": "alwaysai/res10_300x300_ssd_iter_140000",
-    "endpoint_url": "http://localhost:8888",
+    "data_url":"https://server.com/data_post_path",
+    "images_url":"https://server.com/images_post_path",
     "video_camera_id": 0,
     "video_filename": "",
     "enable_streamer": true,
@@ -46,5 +47,22 @@ centroid_max_distance | number | | 50 | No | Yes
 send_image_frames | number array | Array of frame numbers to send. 1 for the first index would be the first frame an object was detected. Changing it to something like 3, means the first 2 frames of the detection will be ignored, which can be used to filter out blips. -1 for the first index indicates that no image frames should be sent. -1 for second index equals unlimited (send all). So something like [1,3] would only send image data for the first 3 frames | [1,3] | No | No
 send_data_frames | number array | Array of frame numbers to send metadata for. 1 for the first indicates the first frame of a detected object will be sent. -1 for the first index indicates no data frames should be sent. -1 for the second index equals unlimited (send all data). Meta data includes an object_id, and timestamp only | [1, -1] | No | Yes
 
-## CHANGELOG
-v0.1.0
+## DATA
+A JSON payload will be sent to the endpoint specified in the `config:data_url` property and will contain the following keys:
+
+```
+{
+  "label":"_name_label_of_detected_object_",
+  "object_id": "_unique_object_id_assigned_by_tracker_",
+  "timestamp": "_unix_timestamp_of_detection_"
+}
+```
+
+Example:
+```
+{
+  "label": "person",
+  "object_id" 1,
+  "timestamp" : 1581808283
+}
+```
